@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,26 +23,86 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="VT6-SJ-7yS"/>
                                 </connections>
                             </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o9w-Dw-Nre">
+                                <rect key="frame" x="0.0" y="826" width="414" height="70"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="abc" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sc8-6p-4rD">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="pwz-Ai-BKb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="sc8-6p-4rD" secondAttribute="trailing" id="K47-WP-maY"/>
+                                    <constraint firstAttribute="height" constant="70" id="Vak-17-9La"/>
+                                    <constraint firstItem="sc8-6p-4rD" firstAttribute="leading" secondItem="o9w-Dw-Nre" secondAttribute="leading" id="jXe-sl-wmd"/>
+                                    <constraint firstItem="sc8-6p-4rD" firstAttribute="top" secondItem="o9w-Dw-Nre" secondAttribute="top" id="nN6-W2-x0h"/>
+                                </constraints>
+                            </view>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type an adress" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tTK-Wp-NYl">
+                                <rect key="frame" x="20" y="57" width="285" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="PoC-zc-CV6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="buP-Kh-1x1">
+                                <rect key="frame" x="302" y="57" width="92" height="40"/>
+                                <color key="backgroundColor" name="AccentColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="92" id="bGm-iA-1jK"/>
+                                    <constraint firstAttribute="height" constant="40" id="nnV-UJ-lE9"/>
+                                </constraints>
+                                <state key="normal" title="Confirm">
+                                    <color key="titleColor" systemColor="secondarySystemBackgroundColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="getDirectionsButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2hf-dD-QYB"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="ocm-Eb-oci" secondAttribute="trailing" id="0sx-0Z-UWB"/>
+                            <constraint firstAttribute="trailing" secondItem="o9w-Dw-Nre" secondAttribute="trailing" id="2gt-EX-7AR"/>
+                            <constraint firstItem="tTK-Wp-NYl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="6nm-ii-UwJ"/>
+                            <constraint firstItem="buP-Kh-1x1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="13" id="C5q-j1-NfY"/>
                             <constraint firstAttribute="bottom" secondItem="ocm-Eb-oci" secondAttribute="bottom" id="TET-M1-Ro0"/>
+                            <constraint firstItem="o9w-Dw-Nre" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="iBn-Vq-ef2"/>
                             <constraint firstItem="ocm-Eb-oci" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="jUe-xh-tnY"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="buP-Kh-1x1" secondAttribute="trailing" constant="20" id="lcE-1p-sk8"/>
+                            <constraint firstItem="tTK-Wp-NYl" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="13" id="qSL-2N-tZZ"/>
+                            <constraint firstAttribute="bottom" secondItem="o9w-Dw-Nre" secondAttribute="bottom" id="rY8-Mx-OhN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="tTK-Wp-NYl" secondAttribute="trailing" constant="109" id="wGC-Q6-Qsi"/>
                             <constraint firstItem="ocm-Eb-oci" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="wxO-z9-UYw"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="adressLabel" destination="sc8-6p-4rD" id="EjG-yU-QkC"/>
+                        <outlet property="getDirectionsButton" destination="buP-Kh-1x1" id="v9P-0q-IkB"/>
                         <outlet property="mapView" destination="ocm-Eb-oci" id="fVS-FA-PG2"/>
+                        <outlet property="searchAdressField" destination="tTK-Wp-NYl" id="ajW-fq-ufI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="20" y="94"/>
+            <point key="canvasLocation" x="18.840579710144929" y="93.75"/>
         </scene>
     </scenes>
     <resources>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
