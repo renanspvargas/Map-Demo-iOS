@@ -28,11 +28,7 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="ocm-Eb-oci" secondAttribute="trailing" id="0sx-0Z-UWB"/>
                             <constraint firstAttribute="bottom" secondItem="ocm-Eb-oci" secondAttribute="bottom" id="TET-M1-Ro0"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ocm-Eb-oci" secondAttribute="bottom" id="W38-oT-6MA"/>
                             <constraint firstItem="ocm-Eb-oci" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="jUe-xh-tnY"/>
-                            <constraint firstItem="ocm-Eb-oci" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="sth-92-fgz"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ocm-Eb-oci" secondAttribute="trailing" id="t0M-L4-Vm9"/>
-                            <constraint firstItem="ocm-Eb-oci" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="w1g-4t-TNF"/>
                             <constraint firstItem="ocm-Eb-oci" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="wxO-z9-UYw"/>
                         </constraints>
                     </view>
