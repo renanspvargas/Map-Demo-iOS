@@ -15,6 +15,10 @@ class ViewController: UIViewController {
     //  Get user location
     //  Centralize and zoom map based on user location
     //  Start traking user location updates to ajust map centralization
+    
+    //  Look for a location using a string (geocode)
+    //  Request route to apple
+    //  Draw route on screen
 
     let regionInMeters: Double = 1000
     
@@ -45,11 +49,24 @@ class ViewController: UIViewController {
                 print("No location found")
                 return
             }
-            self.creaeRoute(destinationCordinates: location.coordinate)
+            
+            self.createRoute(destinationCordinates: location.coordinate)
+            self.pinOriginAndDestination(destinationCordinates: location.coordinate)
         }
     }
     
-    func creaeRoute(destinationCordinates: CLLocationCoordinate2D) {
+    func pinOriginAndDestination(destinationCordinates: CLLocationCoordinate2D) {
+        let location  = locationManager.location?.coordinate
+        let pinOrigin = MKPointAnnotation()
+        pinOrigin.coordinate = location!
+        mapView.addAnnotation(pinOrigin)
+        
+        let pinDestination = MKPointAnnotation()
+        pinDestination.coordinate = destinationCordinates
+        mapView.addAnnotation(pinDestination)
+    }
+    
+    func createRoute(destinationCordinates: CLLocationCoordinate2D) {
         let userLocation  = locationManager.location?.coordinate
         
         let userLocationPlaceMark = MKPlacemark(coordinate: userLocation!)
@@ -83,6 +100,7 @@ class ViewController: UIViewController {
     
     func setupLocationManager() {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest //battery
+//        locationManager.activityType = CLActivityType.fitness
     }
     
     func centerViewUserLocation() {
@@ -113,6 +131,8 @@ class ViewController: UIViewController {
         //denied = User refuses to allow location. If denied once you cant ask again, user have to modify it manually on settings
         //authorizedWhenInUse = Works when app is open
         //authorizedAlways = Works when in backgroud
+            
+        //delegate with function notifying changes
         
             locationManager.requestWhenInUseAuthorization()
             setupLocationManager()
@@ -121,7 +141,7 @@ class ViewController: UIViewController {
             locationManager.startUpdatingLocation() // update didUpdateLocations list
         } else {
             //alert informing the user to turn location on
-            print("turn on location")
+            print("turn the iphone config location to on")
             return
         }
     }
@@ -152,11 +172,6 @@ extension ViewController: CLLocationManagerDelegate {
 }
 
 extension ViewController: MKMapViewDelegate {
-//    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-//        let center = getCenterLocation(mapView)
-//        let geoCoder = CLGeocoder
-//
-//    }
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let render = MKPolylineRenderer(overlay: overlay as! MKPolyline)
         render.strokeColor = .blue
