@@ -26,6 +26,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var searchAdressField: UITextField!
     @IBOutlet weak var getDirectionsButton: UIButton!
     @IBOutlet weak var adressLabel: UILabel!
+    
     let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
@@ -34,92 +35,10 @@ class ViewController: UIViewController {
         mapView.delegate = self
         locationManager.delegate = self
         
-        checkLocationServices()
+//        checkLocationServices()
     }
     
-    @IBAction func getDirectionsButtonTapped(_ sender: Any) {
-        getAdress()
-        view.endEditing(true)
-    }
-    
-    func getAdress() { //get adress by the name on textfield
-        let geoCoder = CLGeocoder()
-        geoCoder.geocodeAddressString(searchAdressField.text!) { (placemarks, error) in
-            guard let placemarks = placemarks, let location = placemarks.first?.location else {
-                print("No location found")
-                return
-            }
-            
-            self.createRoute(destinationCordinates: location.coordinate)
-            self.pinOriginAndDestination(destinationCordinates: location.coordinate)
-        }
-    }
-    
-    func pinOriginAndDestination(destinationCordinates: CLLocationCoordinate2D) {
-        let location  = locationManager.location?.coordinate
-        let pinOrigin = MKPointAnnotation()
-        pinOrigin.coordinate = location!
-        mapView.addAnnotation(pinOrigin)
-        
-        let pinDestination = MKPointAnnotation()
-        pinDestination.coordinate = destinationCordinates
-        mapView.addAnnotation(pinDestination)
-    }
-    
-    func createRoute(destinationCordinates: CLLocationCoordinate2D) {
-        let userLocation  = locationManager.location?.coordinate
-        
-        let userLocationPlaceMark = MKPlacemark(coordinate: userLocation!)
-        let destinationCordinatesPlaceMark = MKPlacemark(coordinate: destinationCordinates)
-        
-        let userMapItem = MKMapItem(placemark: userLocationPlaceMark) //map item armazena mais informaoes alem das coordenadas
-        let destinationMapItem = MKMapItem(placemark: destinationCordinatesPlaceMark)
-        
-        let directionsRequest = MKDirections.Request() // request para apple
-        directionsRequest.source = userMapItem //origem
-        directionsRequest.destination = destinationMapItem //destino
-        directionsRequest.transportType = .automobile //meio de transporte
-        directionsRequest.requestsAlternateRoutes = true //pedir multiplas rotas
-        
-        let directions = MKDirections(request: directionsRequest)
-        directions.calculate { response, error in
-            guard let response = response else {
-                if let error = error {
-                    print("im broke")
-                }
-                return
-            }
-            let routes = response.routes[0] // look at the delegate now
-            self.mapView.addOverlay(routes.polyline)
-            self.mapView.setVisibleMapRect(routes.polyline.boundingMapRect, animated: true)
-        }
-        
-        
-        
-    }
-    
-    func setupLocationManager() {
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest //battery
-//        locationManager.activityType = CLActivityType.fitness
-    }
-    
-    func centerViewUserLocation() {
-        if let location  = locationManager.location?.coordinate {
-            let region = MKCoordinateRegion.init(center: location, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
-            mapView.setRegion(region, animated: true)
-        }
-    }
-    
-    func showUserLocationIcon() {
-        mapView.showsUserLocation = true //you can enable via storyboard attributes inspector
-        
-//        if let location  = locationManager.location?.coordinate {
-//            let pin = MKPointAnnotation()
-//            pin.coordinate = location
-//            mapView.addAnnotation(pin)
-//        }
-    }
-    
+    //MARK: - Manage based on location status
     func checkLocationServices() {
         if CLLocationManager.locationServicesEnabled() { // verify if user disabled location via phone settings
             
@@ -145,19 +64,98 @@ class ViewController: UIViewController {
             return
         }
     }
-
-    func getCenterLocation(_ mapView: MKMapView) -> CLLocation {
-        let lat = mapView.centerCoordinate.latitude
-        let long = mapView.centerCoordinate.longitude
+    
+    //MARK: - Set location precision
+    func setupLocationManager() {
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest //battery
+//        locationManager.activityType = CLActivityType.fitness
+    }
+    
+    //MARK: - User location icon
+    func showUserLocationIcon() {
+        mapView.showsUserLocation = true //you can enable via storyboard attributes inspector
         
-        return CLLocation(latitude: lat, longitude: long)
+//        if let location  = locationManager.location?.coordinate {
+//            let pin = MKPointAnnotation()
+//            pin.coordinate = location
+//            mapView.addAnnotation(pin)
+//        }
+    }
+    
+    //MARK: - Center map on user location
+    func centerViewUserLocation() {
+        if let location  = locationManager.location?.coordinate {
+            let region = MKCoordinateRegion.init(center: location, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+            mapView.setRegion(region, animated: true)
+        }
+    }
+    
+    //MARK: - Get location button
+    @IBAction func getDirectionsButtonTapped(_ sender: Any) {
+        getAdress()
+        view.endEditing(true)
+    }
+    
+    //MARK: - Get location via geocode
+    func getAdress() { //get adress by the name on textfield
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(searchAdressField.text!) { (placemarks, error) in
+            guard let placemarks = placemarks, let location = placemarks.first?.location else {
+                print("No location found")
+                return
+            }
+            
+            self.createRoute(destinationCordinates: location.coordinate)
+            self.pinOriginAndDestination(destinationCordinates: location.coordinate)
+        }
+    }
+    
+    //MARK: - Pin origin and destination
+    func pinOriginAndDestination(destinationCordinates: CLLocationCoordinate2D) {
+        let location  = locationManager.location?.coordinate
+        let pinOrigin = MKPointAnnotation()
+        pinOrigin.coordinate = location!
+        mapView.addAnnotation(pinOrigin)
+        
+        let pinDestination = MKPointAnnotation()
+        pinDestination.coordinate = destinationCordinates
+        mapView.addAnnotation(pinDestination)
+    }
+    
+    //MARK: - Draw path to destination
+    func createRoute(destinationCordinates: CLLocationCoordinate2D) {
+        let userLocation  = locationManager.location?.coordinate
+        
+        let userLocationPlaceMark = MKPlacemark(coordinate: userLocation!)
+        let destinationCordinatesPlaceMark = MKPlacemark(coordinate: destinationCordinates)
+        
+        let userMapItem = MKMapItem(placemark: userLocationPlaceMark) //map item armazena mais informaoes alem das coordenadas
+        let destinationMapItem = MKMapItem(placemark: destinationCordinatesPlaceMark)
+        
+        let directionsRequest = MKDirections.Request() // request para apple
+        directionsRequest.source = userMapItem //origem
+        directionsRequest.destination = destinationMapItem //destino
+        directionsRequest.transportType = .automobile //meio de transporte
+        directionsRequest.requestsAlternateRoutes = true //pedir multiplas rotas
+        
+        let directions = MKDirections(request: directionsRequest)
+        directions.calculate { response, error in
+            guard let response = response else {
+                if let error = error {
+                    print("im broke, help: \(error)")
+                }
+                return
+            }
+            let routes = response.routes[0] // look at the delegate now
+            self.mapView.addOverlay(routes.polyline)
+            self.mapView.setVisibleMapRect(routes.polyline.boundingMapRect, animated: true)
+        }
     }
     
 }
 
 extension ViewController: CLLocationManagerDelegate {
-    
-    //update map center as user moves
+    //MARK: - Update map center as user moves
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         
@@ -165,13 +163,14 @@ extension ViewController: CLLocationManagerDelegate {
         mapView.setRegion(region, animated: true)
     }
     
-    //notify location authorization changes
+    //MARK: - Notify when user location authorization changes
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkLocationServices()
     }
 }
 
 extension ViewController: MKMapViewDelegate {
+    //MARK: - Directions from origin to destination
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let render = MKPolylineRenderer(overlay: overlay as! MKPolyline)
         render.strokeColor = .blue
